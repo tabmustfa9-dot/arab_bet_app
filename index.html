@@ -6,33 +6,74 @@
     <title>Arab Bet Pro</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --primary: #f1c40f; --bg: #121212; --card: #1e1e1e; }
-        body { background-color: var(--bg); color: white; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
-        .header { padding: 30px 0; text-align: center; width: 100%; background: linear-gradient(to bottom, #1e1e1e, #121212); border-bottom: 1px solid #333; }
-        .balance-card { background-color: var(--card); width: 85%; border-radius: 20px; margin-top: 30px; padding: 25px; text-align: center; border: 1px solid #333; }
-        .balance-label { color: #aaa; font-size: 14px; margin-bottom: 10px; }
-        .balance-amount { font-size: 30px; font-weight: bold; color: var(--primary); }
-        .button-container { width: 90%; margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
-        .btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; }
-        .btn-primary { background-color: var(--primary); color: #000; }
-        .btn-secondary { background-color: #2c2c2c; color: white; border: 1px solid #444; }
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; }
+        
+        /* الهيدر العلوي */
+        .top-bar { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #111; border-bottom: 1px solid #f1c40f; }
+        .logo { font-weight: bold; color: #f1c40f; font-size: 18px; }
+        .balance-top { background: #222; padding: 5px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #333; }
+
+        /* شبكة الألعاب والخدمات */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .grid-item {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #222;
+            transition: 0.2s;
+        }
+
+        .grid-item:active { transform: scale(0.95); background: #222; }
+
+        .icon { font-size: 35px; margin-bottom: 10px; display: block; }
+        .title { font-size: 14px; font-weight: bold; }
+
+        /* شريط سفلي للملاحة */
+        .nav-bottom { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #222; }
+        .nav-item { font-size: 12px; color: #888; text-align: center; }
+        .nav-item.active { color: #f1c40f; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h2>ARAB BET <span style="color:var(--primary)">PRO</span></h2>
+    <div class="top-bar">
+        <div class="logo">ARAB BET PRO</div>
+        <div class="balance-top">💰 0.00 د.ع</div>
     </div>
 
-    <div class="balance-card">
-        <div class="balance-label">الرصيد المتاح حالياً</div>
-        <div class="balance-amount">0.00 د.ع</div>
+    <div class="grid-container">
+        <div class="grid-item" onclick="launch('game')">
+            <span class="icon">🎮</span>
+            <span class="title">قسم الألعاب</span>
+        </div>
+        
+        <div class="grid-item" onclick="launch('deposit')">
+            <span class="icon">💳</span>
+            <span class="title">شحن رصيد</span>
+        </div>
+
+        <div class="grid-item" onclick="launch('tasks')">
+            <span class="icon">🎁</span>
+            <span class="title">جوائز يومية</span>
+        </div>
+
+        <div class="grid-item" onclick="launch('support')">
+            <span class="icon">🎧</span>
+            <span class="title">الدعم الفني</span>
+        </div>
     </div>
 
-    <div class="button-container">
-        <button class="btn btn-primary" onclick="handleBtn('إيداع')">إيداع رصيد</button>
-        <button class="btn btn-secondary" onclick="handleBtn('سحب')">سحب الأرباح</button>
-        <button class="btn btn-secondary" onclick="handleBtn('دعم')">مركز الدعم الفني</button>
+    <div class="nav-bottom">
+        <div class="nav-item active">🏠<br>الرئيسية</div>
+        <div class="nav-item">🏆<br>المتصدرين</div>
+        <div class="nav-item">👤<br>حسابي</div>
     </div>
 
     <script>
@@ -40,17 +81,16 @@
         tg.ready();
         tg.expand();
 
-        function handleBtn(type) {
+        function launch(type) {
             tg.HapticFeedback.impactOccurred('medium');
-            if(type === 'إيداع') {
-                tg.showAlert("بوابة الإيداع ستتوفر قريباً.");
-            } else if(type === 'سحب') {
-                tg.showAlert("رصيدك الحالي غير كافٍ للسحب.");
+            if(type === 'game') {
+                tg.showAlert("جاري تحميل قائمة الألعاب...");
+            } else if(type === 'deposit') {
+                tg.showAlert("بوابة الشحن ستفتح قريباً.");
             } else {
-                tg.showAlert("جاري تحويلك للدعم الفني...");
+                tg.showAlert("هذا القسم قيد التطوير.");
             }
         }
     </script>
 </body>
 </html>
-
