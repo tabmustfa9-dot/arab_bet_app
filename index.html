@@ -3,51 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نموذج تطبيق مراهنات</title>
-    <link rel="stylesheet" href="style.css">
+    <title>1xClone - Real Mode</title>
+    <!-- استدعاء المكتبات اللازمة -->
+    <script src="https://jsdelivr.net"></script>
+    <script src="https://telegram.org"></script>
+    <style>
+        body { font-family: sans-serif; background: #0b1e33; color: white; margin: 0; padding: 15px; }
+        .card { background: #1a314d; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+        .balance { font-size: 24px; color: #f8c21c; font-weight: bold; }
+        .match-box { background: #12263d; border: 1px solid #2a4561; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
+        button { background: #f8c21c; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+    </style>
 </head>
 <body>
-    <!-- الشريط العلوي -->
-    <header class="top-nav">
-        <div class="logo">BET-LOGO</div>
-        <div class="auth-buttons">
-            <button class="login-btn">تسجيل دخول</button>
-            <button class="register-btn">تسجيل</button>
-        </div>
-    </header>
 
-    <div class="main-container">
-        <!-- القائمة الجانبية -->
-        <aside class="sidebar">
-            <h3>الرياضات</h3>
-            <ul>
-                <li>⚽ كرة القدم</li>
-                <li>🏀 كرة السلة</li>
-                <li>🎾 التنس</li>
-                <li>🎮 الرياضات الإلكترونية</li>
-            </ul>
-        </aside>
-
-        <!-- المحتوى الرئيسي -->
-        <main class="content">
-            <section class="live-matches">
-                <h2>مباريات مباشرة 🔥</h2>
-                <div class="match-card">
-                    <div class="teams">الفريق أ vs الفريق ب</div>
-                    <div class="odds">
-                        <button>1: 2.50</button>
-                        <button>X: 3.10</button>
-                        <button>2: 1.95</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- قسيمة الرهان -->
-        <aside class="bet-slip">
-            <h3>قسيمة الرهان</h3>
-            <div class="empty-msg">لم تضف أي رهانات بعد</div>
-        </aside>
+    <div class="card">
+        <div>رصيدك الحالي</div>
+        <div class="balance" id="balance">جاري التحميل...</div>
     </div>
+
+    <div id="matches-list">
+        <!-- ستظهر المباريات هنا -->
+    </div>
+
+    <script>
+        // --- إعدادات المبرمج (ضع روابطك هنا) ---
+        const SUPABASE_URL = 'رابط_مشروعك_هنا';
+        const SUPABASE_KEY = 'مفتاح_مشروعك_هنا';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        let tg = window.Telegram.WebApp;
+        let userId = tg.initDataUnsafe.user?.id || "guest_123";
+
+        // وظيفة لجلب الرصيد الحقيقي من قاعدة البيانات
+        async function loadData() {
+            let { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
+            
+            if (!data) {
+                // إذا كان مستخدم جديد، ننشئ له حساباً برصيد 100$
+                await supabase.from('profiles').insert([{ id: userId, username: tg.initDataUnsafe.user?.first_name, balance: 100 }]);
+                document.getElementById('balance').innerText = "100.00 $";
+            } else {
+                document.getElementById('balance').innerText = data.balance.toFixed(2) + " $";
+            }
+        }
+
+        // وظيفة الرهان الحقيقي (تخصم من الرصيد في القاعدة)
+        async function placeBet(amount) {
+            let { data } = await supabase.from('profiles').select('balance').eq('id', userId).single();
+            
+            if (data.balance < amount) {
+                tg.showAlert("عذراً، رصيدك غير كافٍ!");
+                return;
+            }
+
+            const newBalance = data.balance - amount;
+            const { error } = await supabase.from('profiles').update({ balance: newBalance }).eq('id', userId);
+
+            if (!error) {
+                tg.showAlert("تم تسجيل الرهان بنجاح!");
+                loadData(); // تحديث الرصيد على الشاشة
+            }
+        }
+
+        // عرض مباريات وهمية للبدء
+        function showMatches() {
+            const list = document.getElementById('matches-list');
+            list.innerHTML = `
+                <div class="match-box">
+                    <div><b>ريال مدريد vs برشلونة</b></div>
+                    <button onclick="placeBet(10)">راهن بـ 10$ على الملكي</button>
+                </div>
+            `;
+        }
+
+        tg.ready();
+        loadData();
+        showMatches();
+    </script>
 </body>
 </html>
