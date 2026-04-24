@@ -6,80 +6,16 @@
     <title>Arab Bet Pro</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --primary: #f1c40f;
-            --bg: #121212;
-            --card: #1e1e1e;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .header {
-            padding: 30px 0;
-            text-align: center;
-            width: 100%;
-            background: linear-gradient(to bottom, #1e1e1e, #121212);
-            border-bottom: 1px solid #333;
-        }
-
-        .header h2 { margin: 0; font-size: 24px; letter-spacing: 1px; }
-
-        .balance-card {
-            background-color: var(--card);
-            width: 85%;
-            border-radius: 20px;
-            margin-top: 30px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
+        :root { --primary: #f1c40f; --bg: #121212; --card: #1e1e1e; }
+        body { background-color: var(--bg); color: white; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        .header { padding: 30px 0; text-align: center; width: 100%; background: linear-gradient(to bottom, #1e1e1e, #121212); border-bottom: 1px solid #333; }
+        .balance-card { background-color: var(--card); width: 85%; border-radius: 20px; margin-top: 30px; padding: 25px; text-align: center; border: 1px solid #333; }
         .balance-label { color: #aaa; font-size: 14px; margin-bottom: 10px; }
         .balance-amount { font-size: 30px; font-weight: bold; color: var(--primary); }
-
-        .button-container {
-            width: 90%;
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: none;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.1s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .btn:active { transform: scale(0.97); }
-
+        .button-container { width: 90%; margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
+        .btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-primary { background-color: var(--primary); color: #000; }
         .btn-secondary { background-color: #2c2c2c; color: white; border: 1px solid #444; }
-        
-        .footer-text {
-            margin-top: auto;
-            padding: 20px;
-            color: #555;
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
@@ -90,7 +26,7 @@
 
     <div class="balance-card">
         <div class="balance-label">الرصيد المتاح حالياً</div>
-        <div class="balance-amount">5,000 د.ع</div>
+        <div class="balance-amount">0.00 د.ع</div>
     </div>
 
     <div class="button-container">
@@ -99,26 +35,21 @@
         <button class="btn btn-secondary" onclick="handleBtn('دعم')">مركز الدعم الفني</button>
     </div>
 
-    <div class="footer-text">الإصدار 1.0.0 النسخة الاحترافية</div>
-
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        // وظيفة الأزرار الجديدة: تظهر تنبيه بدلاً من الخروج
         function handleBtn(type) {
-            tg.HapticFeedback.impactOccurred('medium'); // اهتزاز خفيف عند الضغط
-            
+            tg.HapticFeedback.impactOccurred('medium');
             if(type === 'إيداع') {
-                tg.showAlert("سيتم تحويلك إلى بوابة الإيداع الآمنة قريباً.");
+                tg.showAlert("بوابة الإيداع ستتوفر قريباً.");
             } else if(type === 'سحب') {
-                tg.showConfirm("هل أنت متأكد من رغبتك في طلب سحب الرصيد؟");
+                tg.showAlert("رصيدك الحالي غير كافٍ للسحب.");
             } else {
-                tg.showAlert("جاري الاتصال بالدعم الفني، يرجى الانتظار...");
+                tg.showAlert("جاري تحويلك للدعم الفني...");
             }
         }
     </script>
 </body>
 </html>
-
