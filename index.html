@@ -6,74 +6,93 @@
     <title>Arab Bet Pro</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; }
+        :root { --gold: #f1c40f; --dark: #000; --card: #1a1a1a; --text: #fff; }
+        body { background-color: var(--dark); color: var(--text); font-family: sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* الهيدر العلوي */
-        .top-bar { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #111; border-bottom: 1px solid #f1c40f; }
-        .logo { font-weight: bold; color: #f1c40f; font-size: 18px; }
-        .balance-top { background: #222; padding: 5px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #333; }
+        /* الهيدر */
+        .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #111; border-bottom: 1px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+        .balance-box { background: #222; padding: 5px 12px; border-radius: 20px; color: var(--gold); font-weight: bold; }
 
-        /* شبكة الألعاب والخدمات */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 20px;
-        }
+        /* حاوية الصفحات */
+        .page { display: none; padding: 20px; padding-bottom: 80px; animation: fadeIn 0.3s; }
+        .active-page { display: block; }
 
-        .grid-item {
-            background: #1a1a1a;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #222;
-            transition: 0.2s;
-        }
+        /* ستايل الكروت والأزرار */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .item-card { background: var(--card); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #333; }
+        .item-card:active { transform: scale(0.95); }
+        .icon { font-size: 30px; display: block; margin-bottom: 10px; }
 
-        .grid-item:active { transform: scale(0.95); background: #222; }
+        /* شريط التنقل السفلي */
+        .nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #222; }
+        .nav-btn { background: none; border: none; color: #888; font-size: 12px; cursor: pointer; }
+        .nav-btn.active { color: var(--gold); }
 
-        .icon { font-size: 35px; margin-bottom: 10px; display: block; }
-        .title { font-size: 14px; font-weight: bold; }
+        /* الحقول النصية */
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: #fff; text-align: center; }
 
-        /* شريط سفلي للملاحة */
-        .nav-bottom { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #222; }
-        .nav-item { font-size: 12px; color: #888; text-align: center; }
-        .nav-item.active { color: #f1c40f; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="logo">ARAB BET PRO</div>
-        <div class="balance-top">💰 0.00 د.ع</div>
+    <div class="header">
+        <span style="color: var(--gold); font-weight: bold;">ARAB BET PRO</span>
+        <div class="balance-box">💰 0.00 د.ع</div>
     </div>
 
-    <div class="grid-container">
-        <div class="grid-item" onclick="launch('game')">
-            <span class="icon">🎮</span>
-            <span class="title">قسم الألعاب</span>
-        </div>
-        
-        <div class="grid-item" onclick="launch('deposit')">
-            <span class="icon">💳</span>
-            <span class="title">شحن رصيد</span>
-        </div>
-
-        <div class="grid-item" onclick="launch('tasks')">
-            <span class="icon">🎁</span>
-            <span class="title">جوائز يومية</span>
-        </div>
-
-        <div class="grid-item" onclick="launch('support')">
-            <span class="icon">🎧</span>
-            <span class="title">الدعم الفني</span>
+    <div id="home" class="page active-page">
+        <h3 style="text-align: center;">لوحة التحكم</h3>
+        <div class="grid">
+            <div class="item-card" onclick="showPage('games')"><span class="icon">🎮</span>الألعاب</div>
+            <div class="item-card" onclick="showPage('deposit')"><span class="icon">💳</span>إيداع</div>
+            <div class="item-card" onclick="showPage('gifts')"><span class="icon">🎁</span>الهدايا</div>
+            <div class="item-card" onclick="showPage('support')"><span class="icon">🎧</span>الدعم</div>
         </div>
     </div>
 
-    <div class="nav-bottom">
-        <div class="nav-item active">🏠<br>الرئيسية</div>
-        <div class="nav-item">🏆<br>المتصدرين</div>
-        <div class="nav-item">👤<br>حسابي</div>
+    <div id="games" class="page">
+        <h3>🎮 الألعاب المتاحة</h3>
+        <p style="color: var(--gold); font-size: 12px;">🔥 خصم 50% على أول لعبة!</p>
+        <div class="grid">
+            <div class="item-card" onclick="play('wheel')"><span class="icon">🎡</span>عجلة الحظ</div>
+            <div class="item-card" onclick="play('guess')"><span class="icon">🎲</span>توقع الرقم</div>
+            <div class="item-card" onclick="play('cashback')"><span class="icon">🛡️</span>استرجاع 50%</div>
+        </div>
+        <button onclick="showPage('home')" style="width:100%; margin-top:20px; background:none; color:var(--gold); border:none;">⬅ رجوع</button>
+    </div>
+
+    <div id="deposit" class="page">
+        <h3>💳 قسم الإيداع</h3>
+        <p>ضع بياناتك لإتمام الشحن:</p>
+        <input type="text" placeholder="رقم الهاتف (زين كاش / آسيا)">
+        <input type="text" placeholder="المبلغ المطلوب">
+        <div style="background:#222; padding:10px; border-radius:10px; font-size:12px; border-left:4px solid var(--gold);">
+            حسابنا البنكي: <br> <b>IQ12 0000 0000 1234 5678</b>
+        </div>
+        <button class="item-card" style="width:100%; margin-top:15px; background:var(--gold); color:#000;" onclick="tg.showAlert('تم إرسال طلب الإيداع بنجاح')">تأكيد الإيداع</button>
+    </div>
+
+    <div id="gifts" class="page">
+        <h3>🎁 هداياك اليومية</h3>
+        <div class="item-card">
+            <span>لعبة مجانية لليوم</span>
+            <button onclick="tg.showAlert('تم تفعيل اللعبة المجانية!')" style="background:var(--gold); border:none; padding:5px 10px; border-radius:5px; margin-top:10px;">استلام</button>
+        </div>
+    </div>
+
+    <div id="support" class="page">
+        <h3>🎧 الدعم الفني</h3>
+        <p>تواصل معنا مباشرة عبر تليجرام:</p>
+        <input type="text" id="sup_num" placeholder="ضع رقمك هنا للتواصل">
+        <button class="item-card" style="width:100%; background:#0088cc; color:white;" onclick="tg.openTelegramLink('https://t.me/YOUR_USER')">ارسل عبر تليجرام</button>
+    </div>
+
+    <div class="nav">
+        <button class="nav-btn active" onclick="showPage('home')">🏠<br>الرئيسية</button>
+        <button class="nav-btn" onclick="showPage('games')">🎮<br>الألعاب</button>
+        <button class="nav-btn" onclick="showPage('deposit')">💰<br>شحن</button>
+        <button class="nav-btn" onclick="showPage('support')">👤<br>الدعم</button>
     </div>
 
     <script>
@@ -81,17 +100,21 @@
         tg.ready();
         tg.expand();
 
-        function launch(type) {
+        function showPage(pageId) {
+            tg.HapticFeedback.impactOccurred('light');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            
+            // تحديث حالة الأزرار السفلية
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        }
+
+        function play(game) {
             tg.HapticFeedback.impactOccurred('medium');
-            if(type === 'game') {
-                tg.showAlert("جاري تحميل قائمة الألعاب...");
-            } else if(type === 'deposit') {
-                tg.showAlert("بوابة الشحن ستفتح قريباً.");
-            } else {
-                tg.showAlert("هذا القسم قيد التطوير.");
-            }
+            if(game === 'wheel') tg.showAlert("🎡 جاري تدوير عجلة الحظ...");
+            if(game === 'guess') tg.showAlert("🎲 توقع الرقم من 1 إلى 10");
+            if(game === 'cashback') tg.showAlert("🛡️ تم تفعيل حماية استرجاع 50% في حال الخسارة لمرة واحدة.");
         }
     </script>
 </body>
 </html>
-
