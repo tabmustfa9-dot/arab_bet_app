@@ -7,7 +7,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --primary-color: #f1c40f; /* لون ذهبي احترافي */
+            --primary-color: #f1c40f; 
             --bg-color: #121212;
             --card-bg: #1e1e1e;
             --text-color: #ffffff;
@@ -44,16 +44,7 @@
             border: 1px solid #333;
         }
 
-        .balance-title { font-size: 14px; color: #aaa; margin-bottom: 10px; }
         .balance-amount { font-size: 32px; font-weight: bold; color: var(--primary-color); }
-
-        .actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 90%;
-            margin-top: 25px;
-        }
 
         .btn {
             padding: 15px;
@@ -62,74 +53,39 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 20px;
+            width: 90%;
+            background-color: var(--primary-color);
+            color: #000;
         }
-
-        .btn-deposit { background-color: var(--primary-color); color: #000; }
-        .btn-withdraw { background-color: #333; color: #fff; border: 1px solid #444; }
-
-        .btn:active { transform: scale(0.95); opacity: 0.8; }
-
-        .footer-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #1e1e1e;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            border-top: 1px solid #333;
-        }
-
-        .nav-item { color: #888; text-decoration: none; font-size: 12px; }
-        .nav-item.active { color: var(--primary-color); }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2 style="margin:0;">ARAB BET <span style="color:var(--primary-color)">PRO</span></h2>
+        <h2>ARAB BET <span style="color:var(--primary-color)">PRO</span></h2>
     </div>
 
     <div class="balance-card">
-        <div class="balance-title">الرصيد الكلي المتاح</div>
-        <div class="balance-amount">0.00 د.ع</div>
+        <div style="color: #aaa; margin-bottom: 10px;">الرصيد المتاح</div>
+        <div class="balance-amount">5,000 د.ع</div>
     </div>
 
-    <div class="actions-grid">
-        <button class="btn btn-deposit" onclick="handleAction('إيداع')">إيداع رصيد</button>
-        <button class="btn btn-withdraw" onclick="handleAction('سحب')">سحب الأرباح</button>
-    </div>
-
-    <div style="margin-top: 30px; width: 90%; color: #666; font-size: 13px; text-align: center;">
-        <p>مرحباً بك في النسخة الاحترافية. يمكنك الآن إدارة حسابك مباشرة من تليجرام.</p>
-    </div>
-
-    <nav class="footer-nav">
-        <div class="nav-item active">الرئيسية</div>
-        <div class="nav-item">السجلات</div>
-        <div class="nav-item">الدعم</div>
-        <div class="nav-item">الإعدادات</div>
-    </nav>
+    <button class="btn" onclick="tg.close()">إغلاق التطبيق</button>
 
     <script>
-        // تهيئة تطبيق تليجرام المصغر
+        // تعريف التطبيق
         const tg = window.Telegram.WebApp;
 
-        // إرسال إشارة الجاهزية لإزالة الشاشة السوداء فوراً
-        tg.ready();
+        // السطر السحري الذي يحل مشكلة الشاشة السوداء
+        tg.ready(); 
 
-        // تمديد التطبيق ليملأ الشاشة بالكامل
+        // تمديد التطبيق ليملأ الشاشة
         tg.expand();
 
-        // ضبط ألوان الواجهة لتتوافق مع سمة تليجرام
+        // ضبط ألوان الواجهة البرمجية
         tg.headerColor = '#1e1e1e';
         tg.backgroundColor = '#121212';
-
-        function handleAction(type) {
-            tg.HapticFeedback.impactOccurred('medium'); // اهتزاز خفيف عند الضغط
-            tg.showAlert(`لقد اخترت عملية: ${type}. هذه الميزة ستتوفر قريباً في التحديث القادم.`);
-        }
     </script>
 </body>
 </html>
