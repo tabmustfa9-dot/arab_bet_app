@@ -6,64 +6,46 @@
     <title>Arab Bet Pro</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --primary-color: #f1c40f; 
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #ffffff;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
+            background-color: #121212;
+            color: white;
+            font-family: sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
-
-        .header {
-            width: 100%;
-            padding: 20px 0;
-            text-align: center;
-            background: linear-gradient(180deg, #1e1e1e 0%, #121212 100%);
-            border-bottom: 2px solid var(--primary-color);
-        }
-
         .balance-card {
-            background-color: var(--card-bg);
-            width: 90%;
-            border-radius: 20px;
-            margin-top: 20px;
-            padding: 25px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            border: 1px solid #333;
+            border: 1px solid #f1c40f;
+            width: 80%;
         }
-
-        .balance-amount { font-size: 32px; font-weight: bold; color: var(--primary-color); }
-
+        .balance-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f1c40f;
+        }
         .btn {
-            padding: 15px;
+            background-color: #f1c40f;
+            color: black;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
-            width: 90%;
-            background-color: var(--primary-color);
-            color: #000;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>ARAB BET <span style="color:var(--primary-color)">PRO</span></h2>
+        <h2>ARAB BET <span style="color:#f1c40f">PRO</span></h2>
     </div>
 
     <div class="balance-card">
@@ -74,19 +56,18 @@
     <button class="btn" onclick="tg.close()">إغلاق التطبيق</button>
 
     <script>
-        // تعريف التطبيق
+        // تعريف التطبيق بشكل صحيح لمرة واحدة فقط
         const tg = window.Telegram.WebApp;
 
-        // السطر السحري الذي يحل مشكلة الشاشة السوداء
+        // السطر السحري الذي يزيل الشاشة السوداء فوراً
         tg.ready(); 
 
         // تمديد التطبيق ليملأ الشاشة
         tg.expand();
 
-        // ضبط ألوان الواجهة البرمجية
+        // ضبط ألوان الواجهة
         tg.headerColor = '#1e1e1e';
         tg.backgroundColor = '#121212';
     </script>
 </body>
 </html>
-
