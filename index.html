@@ -1,1 +1,203 @@
+---
+name: frontend-design
+description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.
+---
 
+This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
+
+The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
+
+## Design Thinking
+
+Before coding, understand the context and commit to a BOLD aesthetic direction:
+- **Purpose**: What problem does this interface solve? Who uses it?
+- **Tone**: Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
+- **Constraints**: Technical requirements (framework, performance, accessibility).
+- **Differentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
+
+**CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
+
+Then implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
+- Production-grade and functional
+- Visually striking and memorable
+- Cohesive with a clear aesthetic point-of-view
+- Meticulously refined in every detail
+
+## Design Variance
+
+Use these baseline values to drive design decisions. Adapt them dynamically based on what the user requests:
+
+* **DESIGN_VARIANCE: 8** (1=Perfect Symmetry, 10=Artsy Chaos) - Controls layout asymmetry, grid-breaking, and spatial experimentation.
+* **MOTION_INTENSITY: 6** (1=Static, 10=Cinematic) - Controls animation complexity, from hover states only to full choreographed sequences.
+* **VISUAL_DENSITY: 4** (1=Art Gallery/Airy, 10=Cockpit/Packed Data) - Controls spacing, whitespace, and information density.
+
+These are defaults, not fixed rules. A luxury brand landing page might use (6, 4, 2) while a data dashboard could use (3, 5, 9). Let the context drive the values.
+
+## Frontend Aesthetics Guidelines
+
+Focus on:
+- **Typography**: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics; unexpected, characterful font choices. Pair a distinctive display font with a refined body font.
+- **Color & Theme**: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Stick to one palette for the entire output, do not fluctuate between warm and cool tones within the same project.
+- **Motion**: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions. Use scroll-triggering and hover states that surprise.
+- **Spatial Composition**: Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Grid-breaking elements. Generous negative space OR controlled density. Prefer CSS Grid over complex flexbox percentage math for reliable multi-column structures.
+- **Backgrounds & Visual Details**: Create atmosphere and depth rather than defaulting to solid colors. Add contextual effects and textures that match the overall aesthetic. Apply creative forms like gradient meshes, noise textures, geometric patterns, layered transparencies, dramatic shadows, decorative borders, and grain overlays.
+
+## Interactive States
+
+Do not generate only the "happy path" static state. Implement full interaction cycles:
+- **Loading**: Skeleton loaders matching the layout shape, not generic spinners.
+- **Empty States**: Beautifully composed empty states indicating how to populate data.
+- **Error States**: Clear, inline error reporting (e.g., form validation).
+- **Tactile Feedback**: Hover, active, and focus states that feel physical and responsive.
+
+## Performance Guardrails
+
+- Animate `transform` and `opacity`, never `top`, `left`, `width`, or `height`.
+- Apply grain/noise filters to fixed, non-interactive overlays, never to scrolling containers.
+- Use z-index intentionally for systemic layers (navbars, modals, overlays), not scattered arbitrarily.
+- Ensure mobile layout gracefully collapses to single-column with adequate spacing.
+
+## Forbidden Patterns (AI Tells)
+
+NEVER use generic AI-generated aesthetics. Actively avoid these common signatures:
+
+**Visual**:
+- Overused font families (Inter, Roboto, Arial, system fonts). Choose distinctive, characterful fonts.
+- Cliched color schemes, particularly purple/blue gradients on white. No neon outer glows.
+- Pure black (#000000). Use off-black, dark gray, or tinted darks.
+- Oversaturated accent colors. Desaturate to blend elegantly with neutrals.
+- Predictable layouts, especially the generic "3 equal cards in a row" feature section. Use asymmetric grids, zig-zag layouts, or horizontal scrolling instead.
+- Cookie-cutter centered hero sections. Try split-screen, left-aligned, or asymmetric compositions.
+
+**Content (the "Jane Doe" effect)**:
+- Generic placeholder names ("John Doe", "Jane Smith"). Invent creative, realistic names.
+- Fake round numbers ("99.99%", "$50.00"). Use organic, messy data ("47.2%", "$38.74").
+- Marketing filler words ("Elevate", "Seamless", "Unleash", "Next-Gen"). Use concrete, specific language.
+- Generic brand names ("Acme", "Nexus", "SmartFlow"). Invent contextually appropriate names.
+
+**Technical**:
+- Emojis in UI text or alt text. Use proper icons or SVG primitives instead.
+- Broken or unreliable image URLs. Use reliable placeholder services or inline SVGs.
+
+Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. Vary between light and dark themes, different fonts, different aesthetics. NEVER converge on common choices (Space Grotesk, for example) across generations.
+
+**IMPORTANT**: Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code with extensive animations and effects. Minimalist or refined designs need restraint, precision, and careful attention to spacing, typography, and subtle details. Elegance comes from executing the vision well.
+
+Remember: extraordinary creative work is achievable. Push boundaries, think outside the box, and commit fully to a distinctive vision.
+import { Link, createFileRoute } from '@tanstack/react-router'
+import products from '@/data/products'
+import { BuyButton } from '@/components/BuyButton'
+
+export const Route = createFileRoute('/')({
+  component: ProductsIndex,
+})
+
+function ProductsIndex() {
+  return (
+    <div className="p-5">
+      <h1 className="text-3xl font-bold mb-16 text-center">Product Company</h1>
+      <div className="max-w-7xl mx-auto">
+        {products.map((product, index) => (
+          <div
+            key={product.id}
+            className={`flex flex-col md:flex-row items-stretch gap-8 mb-32 ${
+              index % 2 === 1 ? 'md:flex-row-reverse' : ''
+            }`}
+          >
+            <div className="w-full md:w-[60%]">
+              <Link
+                to="/products/$productId"
+                params={{
+                  productId: product.id.toString(),
+                }}
+                className="block"
+              >
+                <div className="w-full aspect-[4/3]">
+                  <div className="w-full h-full overflow-hidden rounded-2xl">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            <div className="w-full md:w-[50%] md:my-12">
+              <div className="rounded-2xl p-8 border">
+                <h2 className="text-2xl font-bold mb-3">{product.name}</h2>
+                <p className="mb-4 leading-relaxed">
+                  {product.shortDescription}
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="text-2xl font-bold">
+                    ${product.price.toLocaleString()}
+                  </div>
+                  <BuyButton productId={product.id} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+@import "tailwindcss" source("../");
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+code {
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+
+
+import '../styles.css'
+
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      {
+        charSet: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        title: 'Application Name',
+      },
+    ],
+  }),
+  shellComponent: RootDocument,
+})
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  )
+}
+{
+  "name": "ecommerce",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "vite build"
+  },
+  "depen
+... [truncated]
