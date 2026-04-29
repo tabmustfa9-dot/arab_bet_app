@@ -1,0 +1,66 @@
+import telebot
+import google.generativeai as genai
+from telebot import types
+
+# --- 1. إعدادات المفاتيح (استبدل القيم هنا بمفاتيحك) ---
+TELEGRAM_TOKEN = " 8756754801:AAFZ0xa4zqrgfYSwsUT-C85_RXoukP5V9qc "
+GEMINI_API_KEY = " AIzaSyC2dejHPonZZldTBxFXcn3XIX9psOlbv3Y "
+
+# --- 2. تهيئة الذكاء الاصطناعي وبوت التيليجرام ---
+genai.configure(api_key=GEMINI_API_KEY)
+ai_model = genai.GenerativeModel('gemini-1.5-flash')
+bot = telebot.TeleBot(TELEGRAM_TOKEN)
+
+# --- 3. تصميم واجهة البوت (الأزرار) ---
+def main_menu():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton('🤖 تحليل السوق بالذكاء الاصطناعي')
+    btn2 = types.KeyboardButton('📈 أسعار العملات اليوم')
+    btn3 = types.KeyboardButton('💰 إيداع وسحب (العراق)')
+    markup.add(btn1)
+    markup.add(btn2, btn3)
+    return markup
+
+# --- 4. التعامل مع الأوامر ---
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    welcome_text = (
+        "مرحباً بك في منصة تداول Trexo الذكية 🇮🇶\n\n"
+        "أنا مساعدك الذكي، يمكنني تحليل أخبار الفوركس والإجابة على استفساراتك "
+        "باستخدام أقوى تقنيات الذكاء الاصطناعي."
+    )
+    # يمكنك هنا إرسال الصورة الترحيبية بأبعاد 640x360
+    bot.send_message(message.chat.id, welcome_text, reply_markup=main_menu())
+
+@bot.message_handler(func=lambda message: True)
+def handle_messages(message):
+    if message.text == '🤖 تحليل السوق بالذكاء الاصطناعي':
+        bot.reply_to(message, "أرسل لي اسم زوج العملات أو خبر اقتصادي وسأقوم بتحليله لك فوراً.")
+    
+    elif message.text == '💰 إيداع وسحب (العراق)':
+        payment_text = (
+            "وسائل الدفع المتاحة في العراق:\n"
+            "✅ زين كاش (Zain Cash)\n"
+            "✅ آسيا حوالة (AsiaHawala)\n\n"
+            "لإتمام العملية، يرجى التواصل مع الدعم الفني."
+        )
+        bot.send_message(message.chat.id, payment_text)
+
+    elif message.text == '📈 أسعار العملات اليوم':
+        bot.reply_to(message, "جاري جلب الأسعار اللحظية من البورصة...")
+        # هنا مستقبلاً تربط كود MetaTrader 5 لجلب الأسعار الحقيقية
+
+    else:
+        # إذا أرسل المستخدم أي نص، يقوم Gemini بالرد عليه كخبير تداول
+        try:
+            response = ai_model.generate_content(
+                f"أنت خبير تداول فوركس في بوت تداول عراقي. أجب باختصار واحترافية: {message.text}"
+            )
+            bot.reply_to(message, response.text)
+        except Exception as e:
+            bot.reply_to(message, "عذراً، حدث خطأ في الاتصال بالذكاء الاصطناعي.")
+
+# --- 5. تشغيل البوت ---
+print("البوت يعمل الآن بنجاح...")
+bot.polling(none_stop=True)
